@@ -137,26 +137,20 @@ app.get('/search', (req, res) => {
 app.post('/search', (req, res) => {
   const { from, to } = req.body;
 
-  db.all(
-    "SELECT * FROM TRAINS WHERE fromS=? AND toS=?",
-    [from, to],
-    (err, rows) => {
-      if (rows.length === 0) {
-        return res.send("❌ No Train Found");
-      }
-      let output = "<h2>Available Trains</h2>";
-      rows.forEach(t => {
-        output += `<p>${t.name} | <a href='/book/${t.id}'>Book</a></p>`;
-      });
-      res.send(output);
-    }
-  );
-});
-
-
-app.get('/debug-trains', (req, res) => {
-  db.all("SELECT * FROM TRAINS", (err, rows) => {
+db.all(
+  "SELECT * FROM TRAINS WHERE lower(trim(fromS)) = lower(trim(?)) AND lower(trim(toS)) = lower(trim(?))",
+  [from, to],
+  (err, rows) => {
     if (err) return res.send(err);
-    res.json(rows);
-  });
-});
+
+    if (rows.length === 0) {
+      return res.send("❌ Train Not Found");
+    }
+
+    let output = "<h2>Available Trains</h2>";
+    rows.forEach(t => {
+      output += `<p>${t.name} | <a href='/book/${t.id}'>Book</a></p>`;
+    });
+    res.send(output);
+  }
+);
