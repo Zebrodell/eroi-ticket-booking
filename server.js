@@ -96,6 +96,31 @@ app.listen(3000, () => {
   console.log('Server running');
 });
 
+// ADMIN PANEL
+app.get('/admin', (req, res) => {
+  if (!req.session.user || req.session.user.isAdmin !== 1) {
+    return res.send('❌ Access Denied');
+  }
+  res.sendFile(__dirname + '/views/admin.html');
+});
+
+// ADD TRAIN (ADMIN ONLY)
+app.post('/admin/add-train', (req, res) => {
+  if (!req.session.user || req.session.user.isAdmin !== 1) {
+    return res.send('❌ Access Denied');
+  }
+
+  const { name, fromS, toS } = req.body;
+
+  db.run(
+    "INSERT INTO TRAINS(name, fromS, toS) VALUES(?,?,?)",
+    [name, fromS, toS],
+    () => {
+      res.send('✅ Train Added Successfully <br><a href=\"/admin\">Back</a>');
+    }
+  );
+});
+
 // LOGOUT
 app.get('/logout', (req, res) => {
   req.session.destroy();
