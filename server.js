@@ -131,7 +131,7 @@ app.get('/logout', (req, res) => {
 // SHOW SEARCH PAGE
 app.get('/search', (req, res) => {
   if (!req.session.user) return res.redirect('/login');
-  res.sendFile(__dirname + '/views/search.html');
+  render(res, 'search.html');
 });
 
 // SEARCH TRAINS
