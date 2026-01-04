@@ -2,6 +2,7 @@ const express = require('express');
 const session = require('express-session');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
+const fs = require('fs');
 
 const app = express();
 const db = new sqlite3.Database('./database.db');
