@@ -95,6 +95,8 @@ app.get('/dashboard', (req, res) => {
   render(res, 'dashboard.html');
 });
 
+});
+
 app.listen(3000, () => {
   console.log('Server running');
 });
@@ -109,6 +111,8 @@ app.get('/admin', (req, res) => {
     return res.send('❌ Access Denied');
   }
   render(res, 'admin.html');
+});
+
 });
 
 // ADD TRAIN (ADMIN ONLY)
