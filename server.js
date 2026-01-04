@@ -15,6 +15,8 @@ app.use(session({
 }));
 
 db.serialize(() => {
+
+  // USERS
   db.run(`CREATE TABLE IF NOT EXISTS USERS(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT,
@@ -23,7 +25,17 @@ db.serialize(() => {
     roblox TEXT,
     isAdmin INTEGER DEFAULT 0
   )`);
+
+  // TRAINS
+  db.run(`CREATE TABLE IF NOT EXISTS TRAINS(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    fromS TEXT,
+    toS TEXT
+  )`);
+
 });
+
 
 // OWNER ACCOUNT
 db.run(
