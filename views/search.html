@@ -1,22 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Search Trains</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
-<body>
+<h1>Search Trains</h1>
 
-<div class="card">
-  <h1>Search Trains</h1>
-
-  <form method="POST" action="/search">
-    <input name="from" placeholder="From Station" required>
-    <input name="to" placeholder="To Station" required>
-    <button>Search</button>
-  </form>
-
-  <a href="/dashboard">⬅ Back</a>
-</div>
-
-</body>
-</html>
+<form method="POST" action="/search" class="card">
+  <input name="from" placeholder="From Station" required>
+  <input name="to" placeholder="To Station" required>
+  <button>Search</button>
+</form>
