@@ -104,7 +104,11 @@ app.get('/admin', (req, res) => {
   if (!req.session.user || req.session.user.isAdmin !== 1) {
     return res.send('❌ Access Denied');
   }
-  res.sendFile(__dirname + '/views/admin.html');
+  app.get('/admin', (req, res) => {
+  if (!req.session.user || req.session.user.isAdmin !== 1) {
+    return res.send('❌ Access Denied');
+  }
+  render(res, 'admin.html');
 });
 
 // ADD TRAIN (ADMIN ONLY)
