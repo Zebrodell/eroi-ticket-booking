@@ -134,23 +134,32 @@ app.get('/search', (req, res) => {
 });
 
 // SEARCH TRAINS
+// SEARCH TRAINS
 app.post('/search', (req, res) => {
   const { from, to } = req.body;
 
-db.all(
-  "SELECT * FROM TRAINS WHERE lower(trim(fromS)) = lower(trim(?)) AND lower(trim(toS)) = lower(trim(?))",
-  [from, to],
-  (err, rows) => {
-    if (err) return res.send(err);
+  db.all(
+    "SELECT * FROM TRAINS WHERE lower(trim(fromS)) = lower(trim(?)) AND lower(trim(toS)) = lower(trim(?))",
+    [from, to],
+    (err, rows) => {
+      if (err) return res.send(err);
 
-    if (rows.length === 0) {
-      return res.send("❌ Train Not Found");
+      if (rows.length === 0) {
+        return res.send("❌ Train Not Found");
+      }
+
+      let output = "<h2>Available Trains</h2>";
+      rows.forEach(t => {
+        output += `<p>${t.name} | <a href="/book/${t.id}">Book</a></p>`;
+      });
+
+      res.send(output);
     }
+  );
+});
 
-    let output = "<h2>Available Trains</h2>";
-    rows.forEach(t => {
-      output += `<p>${t.name} | <a href='/book/${t.id}'>Book</a></p>`;
-    });
-    res.send(output);
-  }
-);
+// SERVER START (VERY IMPORTANT)
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log("Server running on port", PORT);
+});
