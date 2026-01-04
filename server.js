@@ -164,3 +164,10 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("Server running on port", PORT);
 });
+
+function render(res, page) {
+  const layout = fs.readFileSync(__dirname + '/views/layout.html', 'utf8');
+  const pageContent = fs.readFileSync(__dirname + '/views/' + page, 'utf8');
+  res.send(layout.replace('{{CONTENT}}', pageContent));
+}
+
