@@ -83,3 +83,35 @@ app.get('/dashboard', (req, res) => {
 app.listen(3000, () => {
   console.log('Server running');
 });
+
+// LOGOUT
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.redirect('/login');
+});
+
+// SHOW SEARCH PAGE
+app.get('/search', (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+  res.sendFile(__dirname + '/views/search.html');
+});
+
+// SEARCH TRAINS
+app.post('/search', (req, res) => {
+  const { from, to } = req.body;
+
+  db.all(
+    "SELECT * FROM TRAINS WHERE fromS=? AND toS=?",
+    [from, to],
+    (err, rows) => {
+      if (rows.length === 0) {
+        return res.send("❌ No Train Found");
+      }
+      let output = "<h2>Available Trains</h2>";
+      rows.forEach(t => {
+        output += `<p>${t.name} | <a href='/book/${t.id}'>Book</a></p>`;
+      });
+      res.send(output);
+    }
+  );
+});
