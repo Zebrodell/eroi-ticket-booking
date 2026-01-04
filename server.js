@@ -152,3 +152,11 @@ app.post('/search', (req, res) => {
     }
   );
 });
+
+
+app.get('/debug-trains', (req, res) => {
+  db.all("SELECT * FROM TRAINS", (err, rows) => {
+    if (err) return res.send(err);
+    res.json(rows);
+  });
+});
