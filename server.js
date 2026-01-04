@@ -90,7 +90,9 @@ app.post('/signup', (req, res) => {
 // DASHBOARD
 app.get('/dashboard', (req, res) => {
   if (!req.session.user) return res.redirect('/login');
-  res.sendFile(__dirname + '/views/dashboard.html');
+  app.get('/dashboard', (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+  render(res, 'dashboard.html');
 });
 
 app.listen(3000, () => {
