@@ -31,7 +31,53 @@ db.run(
 );
 
 app.get('/', (req, res) => {
-  res.send('EROI Ticket Booking Running 🚆');
+  res.redirect('/login');
+});
+
+// SHOW LOGIN PAGE
+app.get('/login', (req, res) => {
+  res.sendFile(__dirname + '/views/login.html');
+});
+
+// SHOW SIGNUP PAGE
+app.get('/signup', (req, res) => {
+  res.sendFile(__dirname + '/views/signup.html');
+});
+
+// LOGIN LOGIC
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  db.get(
+    "SELECT * FROM USERS WHERE username=? AND password=?",
+    [username, password],
+    (err, user) => {
+      if (!user) {
+        return res.send("❌ Invalid username or password");
+      }
+      req.session.user = user;
+      res.redirect('/dashboard');
+    }
+  );
+});
+
+// SIGNUP LOGIC
+app.post('/signup', (req, res) => {
+  const { username, password, discord, roblox } = req.body;
+
+  db.run(
+    "INSERT INTO USERS(username,password,discord,roblox) VALUES(?,?,?,?)",
+    [username, password, discord, roblox],
+    () => {
+      res.redirect('/login');
+    }
+  );
+});
+
+// DASHBOARD
+app.get('/dashboard', (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+  res.sendFile(__dirname + '/views/dashboard.html');
 });
 
 app.listen(3000, () => {
